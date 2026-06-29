@@ -1,8 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { MessageCircle, User, Package, Heart, Search } from 'lucide-react'
+import { MessageCircle, Package, Search } from 'lucide-react'
 
 interface MobileNavProps {
   whatsappNumber: string
@@ -10,30 +9,7 @@ interface MobileNavProps {
 }
 
 export default function MobileNav({ whatsappNumber, onSearchOpen }: MobileNavProps) {
-  const pathname = usePathname()
-
-  const items = [
-    {
-      label: 'Contato',
-      icon: MessageCircle,
-      action: 'whatsapp',
-    },
-    {
-      label: 'Desejos',
-      icon: Heart,
-      href: '/#mais-desejados',
-    },
-    {
-      label: 'Buscar',
-      icon: Search,
-      action: 'search',
-    },
-    {
-      label: 'Catálogo',
-      icon: Package,
-      href: '/#catalogo',
-    },
-  ]
+  const waUrl = `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent('Olá! Vim pelo site da Willan Importados e gostaria de saber mais.')}`
 
   return (
     <nav
@@ -44,48 +20,40 @@ export default function MobileNav({ whatsappNumber, onSearchOpen }: MobileNavPro
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
     >
-      <div className="grid grid-cols-4 h-16">
-        {items.map(({ label, icon: Icon, href, action }) => {
-          if (action === 'whatsapp') {
-            return (
-              <a
-                key={label}
-                href={`https://wa.me/${whatsappNumber.replace(/\D/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center gap-1 transition-colors active:opacity-70"
-                style={{ color: 'rgba(245,240,232,0.5)' }}
-              >
-                <Icon size={20} />
-                <span className="text-[10px] tracking-wide">{label}</span>
-              </a>
-            )
-          }
-          if (action === 'search') {
-            return (
-              <button
-                key={label}
-                onClick={onSearchOpen}
-                className="flex flex-col items-center justify-center gap-1 transition-colors active:opacity-70 w-full"
-                style={{ color: 'rgba(245,240,232,0.5)' }}
-              >
-                <Icon size={20} />
-                <span className="text-[10px] tracking-wide">{label}</span>
-              </button>
-            )
-          }
-          return (
-            <Link
-              key={label}
-              href={href!}
-              className="flex flex-col items-center justify-center gap-1 transition-colors active:opacity-70"
-              style={{ color: 'rgba(245,240,232,0.5)' }}
-            >
-              <Icon size={20} />
-              <span className="text-[10px] tracking-wide">{label}</span>
-            </Link>
-          )
-        })}
+      <div className="grid grid-cols-3 h-16">
+
+        {/* Contato WhatsApp */}
+        <a
+          href={waUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-col items-center justify-center gap-1 active:opacity-70"
+          style={{ color: 'rgba(245,240,232,0.5)' }}
+        >
+          <MessageCircle size={20} />
+          <span className="text-[10px] tracking-wide">Contato</span>
+        </a>
+
+        {/* Buscar */}
+        <button
+          onClick={onSearchOpen}
+          className="flex flex-col items-center justify-center gap-1 active:opacity-70 w-full"
+          style={{ color: 'rgba(245,240,232,0.5)' }}
+        >
+          <Search size={20} />
+          <span className="text-[10px] tracking-wide">Buscar</span>
+        </button>
+
+        {/* Catálogo */}
+        <Link
+          href="/#catalogo"
+          className="flex flex-col items-center justify-center gap-1 active:opacity-70"
+          style={{ color: 'rgba(245,240,232,0.5)' }}
+        >
+          <Package size={20} />
+          <span className="text-[10px] tracking-wide">Catálogo</span>
+        </Link>
+
       </div>
     </nav>
   )

@@ -53,7 +53,7 @@ export default function Header({ onSearchOpen, whatsappNumber = '5511999999999' 
 
               <button
                 onClick={onSearchOpen}
-                className="relative flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200"
+                className="relative hidden sm:flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200"
                 style={{ color: 'rgba(245,240,232,0.7)' }}
                 aria-label="Buscar"
               >

@@ -1,4 +1,4 @@
-import { Package, Tags, TrendingUp } from 'lucide-react'
+import { Package, Tags, Plus, ChevronRight } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { getSettings } from '@/lib/actions/settings'
 import Link from 'next/link'
@@ -16,106 +16,83 @@ async function getStats() {
 export default async function AdminDashboard() {
   const [stats, settings] = await Promise.all([getStats(), getSettings()])
 
-  const statCards = [
-    { title: 'Perfumes', value: stats.perfumesCount, icon: Package, href: '/admin/perfumes', desc: 'produtos no catálogo' },
-    { title: 'Marcas', value: stats.brandsCount, icon: Tags, href: '/admin/marcas', desc: 'marcas cadastradas' },
-  ]
-
   return (
-    <div>
-      <div className="mb-8">
-        <h1
-          className="text-3xl font-bold mb-2"
-          style={{ fontFamily: '"Playfair Display", serif', color: 'var(--ivory)' }}
-        >
+    <div className="space-y-4">
+
+      {/* Título */}
+      <div>
+        <h1 className="text-2xl font-bold" style={{ fontFamily: '"Playfair Display", serif', color: 'var(--ivory)' }}>
           Painel
         </h1>
-        <p style={{ color: 'rgba(245,240,232,0.5)' }}>
-          Bem-vindo à área administrativa do Willan Importados
+        <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.4)' }}>
+          Willan Importados
         </p>
       </div>
 
-      {/* Cards de estatísticas */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-        {statCards.map(({ title, value, icon: Icon, href, desc }) => (
-          <Link
-            key={title}
-            href={href}
-            className="block p-6 rounded-2xl transition-all duration-200 group admin-card"
-            style={{
-              backgroundColor: 'var(--charcoal)',
-              border: '1px solid rgba(201,168,76,0.1)',
-            }}
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center"
-                style={{ backgroundColor: 'rgba(201,168,76,0.1)' }}
-              >
-                <Icon size={20} style={{ color: 'var(--gold)' }} />
-              </div>
-              <TrendingUp
-                size={16}
-                className="opacity-0 group-hover:opacity-100 transition-opacity"
-                style={{ color: 'var(--gold)' }}
-              />
-            </div>
-            <p className="text-2xl font-bold mb-1" style={{ color: 'var(--ivory)' }}>
-              {value}
-            </p>
-            <p className="text-xs uppercase tracking-wider" style={{ color: 'rgba(245,240,232,0.45)' }}>
-              {desc}
-            </p>
-          </Link>
-        ))}
+      {/* Stats em linha */}
+      <div className="grid grid-cols-2 gap-3">
+        <Link href="/admin/perfumes"
+          className="flex items-center gap-3 p-4 rounded-2xl active:opacity-70 transition-opacity"
+          style={{ backgroundColor: 'var(--charcoal)', border: '1px solid rgba(201,168,76,0.1)' }}>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ backgroundColor: 'rgba(201,168,76,0.1)' }}>
+            <Package size={18} style={{ color: 'var(--gold)' }} />
+          </div>
+          <div>
+            <p className="text-xl font-bold leading-none" style={{ color: 'var(--ivory)' }}>{stats.perfumesCount}</p>
+            <p className="text-[10px] uppercase tracking-wider mt-0.5" style={{ color: 'rgba(245,240,232,0.4)' }}>Perfumes</p>
+          </div>
+        </Link>
 
-        {/* Card WhatsApp editável */}
-        <WhatsAppCard whatsappNumber={settings?.whatsapp_number || '5511999999999'} />
+        <Link href="/admin/marcas"
+          className="flex items-center gap-3 p-4 rounded-2xl active:opacity-70 transition-opacity"
+          style={{ backgroundColor: 'var(--charcoal)', border: '1px solid rgba(201,168,76,0.1)' }}>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ backgroundColor: 'rgba(201,168,76,0.1)' }}>
+            <Tags size={18} style={{ color: 'var(--gold)' }} />
+          </div>
+          <div>
+            <p className="text-xl font-bold leading-none" style={{ color: 'var(--ivory)' }}>{stats.brandsCount}</p>
+            <p className="text-[10px] uppercase tracking-wider mt-0.5" style={{ color: 'rgba(245,240,232,0.4)' }}>Marcas</p>
+          </div>
+        </Link>
       </div>
+
+      {/* WhatsApp */}
+      <WhatsAppCard whatsappNumber={settings?.whatsapp_number || '5511999999999'} />
 
       {/* Ações rápidas */}
-      <div
-        className="rounded-2xl p-6"
-        style={{
-          backgroundColor: 'var(--charcoal)',
-          border: '1px solid rgba(201,168,76,0.1)',
-        }}
-      >
-        <h2
-          className="text-xs tracking-[0.3em] uppercase mb-5"
-          style={{ color: 'var(--gold)' }}
-        >
-          Ações Rápidas
-        </h2>
-        <div className="flex flex-wrap gap-3">
-          <Link
-            href="/admin/perfumes/novo"
-            className="btn-gold px-5 py-2.5 rounded-lg text-sm"
-          >
-            <span>+ Novo Perfume</span>
-          </Link>
-          <Link
-            href="/admin/marcas"
-            className="px-5 py-2.5 rounded-lg text-sm transition-all duration-200"
+      <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(201,168,76,0.1)' }}>
+        <p className="px-4 py-3 text-[10px] uppercase tracking-widest" style={{ color: 'var(--gold)', backgroundColor: 'var(--charcoal)' }}>
+          Ações rápidas
+        </p>
+        {[
+          { href: '/admin/perfumes/novo', label: 'Novo Perfume', desc: 'Adicionar ao catálogo' },
+          { href: '/admin/perfumes', label: 'Gerenciar Perfumes', desc: 'Editar ou excluir' },
+          { href: '/admin/marcas', label: 'Gerenciar Marcas', desc: 'Criar ou remover marcas' },
+          { href: '/admin/configuracoes', label: 'Configurações', desc: 'WhatsApp e preferências' },
+        ].map(({ href, label, desc }, i, arr) => (
+          <Link key={href} href={href}
+            className="flex items-center justify-between px-4 py-3.5 active:opacity-70 transition-opacity"
             style={{
-              border: '1px solid rgba(201,168,76,0.3)',
-              color: 'var(--gold)',
-            }}
-          >
-            Gerenciar Marcas
+              backgroundColor: 'var(--charcoal)',
+              borderTop: i > 0 ? '1px solid rgba(201,168,76,0.06)' : 'none',
+            }}>
+            <div>
+              <p className="text-sm font-medium" style={{ color: 'var(--ivory)' }}>{label}</p>
+              <p className="text-xs" style={{ color: 'rgba(245,240,232,0.35)' }}>{desc}</p>
+            </div>
+            <ChevronRight size={16} style={{ color: 'rgba(201,168,76,0.4)' }} />
           </Link>
-          <Link
-            href="/admin/configuracoes"
-            className="px-5 py-2.5 rounded-lg text-sm transition-all duration-200"
-            style={{
-              border: '1px solid rgba(201,168,76,0.3)',
-              color: 'var(--gold)',
-            }}
-          >
-            Configurações
-          </Link>
-        </div>
+        ))}
       </div>
+
+      {/* Botão destaque */}
+      <Link href="/admin/perfumes/novo"
+        className="btn-gold flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl text-sm font-semibold">
+        <Plus size={16} />
+        Novo Perfume
+      </Link>
     </div>
   )
 }
