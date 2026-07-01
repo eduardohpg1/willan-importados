@@ -202,6 +202,7 @@ export default function Header({ onSearchOpen, whatsappNumber = '5511999999999' 
           {[
             { label: 'Início', href: '/', icon: '⌂' },
             { label: 'Catálogo', href: '/#catalogo', icon: '◈' },
+            { label: 'Sobre mim', href: '/sobre', icon: '✦' },
           ].map((item) => (
             <Link
               key={item.href}

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { MessageCircle, Package, Search } from 'lucide-react'
+import { MessageCircle, Package, Search, User } from 'lucide-react'
 
 interface MobileNavProps {
   whatsappNumber: string
@@ -20,7 +20,7 @@ export default function MobileNav({ whatsappNumber, onSearchOpen }: MobileNavPro
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
     >
-      <div className="grid grid-cols-3 h-16">
+      <div className="grid grid-cols-4 h-16">
 
         {/* Contato WhatsApp */}
         <a
@@ -52,6 +52,16 @@ export default function MobileNav({ whatsappNumber, onSearchOpen }: MobileNavPro
         >
           <Package size={20} />
           <span className="text-[10px] tracking-wide">Catálogo</span>
+        </Link>
+
+        {/* Sobre mim */}
+        <Link
+          href="/sobre"
+          className="flex flex-col items-center justify-center gap-1 active:opacity-70"
+          style={{ color: 'rgba(245,240,232,0.5)' }}
+        >
+          <User size={20} />
+          <span className="text-[10px] tracking-wide">Sobre</span>
         </Link>
 
       </div>
