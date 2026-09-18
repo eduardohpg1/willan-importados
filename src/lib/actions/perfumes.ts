@@ -20,12 +20,15 @@ function toSlug(text: string) {
 }
 
 export async function getPerfumes(brandSlug?: string, search?: string) {
-  if (!isSupabaseConfigured()) return MOCK_PERFUMES as any[]
+  if (!isSupabaseConfigured()) {
+    return [...MOCK_PERFUMES].sort((a, b) => Number(b.featured) - Number(a.featured)) as any[]
+  }
 
   const supabase = await createClient()
   let query = supabase
     .from('perfumes')
     .select('*, brand:brands(*)')
+    .order('featured', { ascending: false })
     .order('created_at', { ascending: false })
 
   if (brandSlug) {

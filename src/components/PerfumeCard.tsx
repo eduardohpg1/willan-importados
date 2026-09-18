@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { MessageCircle } from 'lucide-react'
+import { MessageCircle, Star } from 'lucide-react'
 import type { Perfume } from '@/types'
 import { buildWhatsAppUrl } from '@/lib/utils'
 
@@ -55,19 +55,34 @@ export default function PerfumeCard({ perfume, whatsappNumber }: PerfumeCardProp
           </span>
         )}
 
-        {/* Badge esgotado */}
-        {perfume.out_of_stock && (
-          <span
-            className="absolute top-2 right-2 px-2 py-0.5 text-[10px] tracking-widest uppercase rounded font-medium"
-            style={{
-              backgroundColor: 'rgba(239,68,68,0.85)',
-              backdropFilter: 'blur(6px)',
-              color: '#fff',
-            }}
-          >
-            Esgotado
-          </span>
-        )}
+        {/* Badges destaque / esgotado */}
+        <div className="absolute top-2 right-2 flex flex-col items-end gap-1">
+          {perfume.featured && (
+            <span
+              className="flex items-center gap-1 px-2 py-0.5 text-[10px] tracking-widest uppercase rounded font-medium"
+              style={{
+                backgroundColor: 'rgba(201,168,76,0.9)',
+                backdropFilter: 'blur(6px)',
+                color: '#1a1a1a',
+              }}
+            >
+              <Star size={9} fill="#1a1a1a" />
+              Destaque
+            </span>
+          )}
+          {perfume.out_of_stock && (
+            <span
+              className="px-2 py-0.5 text-[10px] tracking-widest uppercase rounded font-medium"
+              style={{
+                backgroundColor: 'rgba(239,68,68,0.85)',
+                backdropFilter: 'blur(6px)',
+                color: '#fff',
+              }}
+            >
+              Esgotado
+            </span>
+          )}
+        </div>
 
       </Link>
 
