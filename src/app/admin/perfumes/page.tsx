@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Plus, Pencil, Package } from 'lucide-react'
 import { getPerfumes } from '@/lib/actions/perfumes'
 import DeletePerfumeButton from '@/components/admin/DeletePerfumeButton'
+import ToggleStockButton from '@/components/admin/ToggleStockButton'
 
 export default async function AdminPerfumesPage() {
   const perfumes = await getPerfumes()
@@ -47,7 +48,8 @@ export default async function AdminPerfumesPage() {
               <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0"
                 style={{ backgroundColor: 'var(--smoke)' }}>
                 {perfume.images?.[0] ? (
-                  <Image src={perfume.images[0]} alt={perfume.name} fill className="object-cover" sizes="56px" />
+                  <Image src={perfume.images[0]} alt={perfume.name} fill className="object-cover" sizes="56px"
+                    style={perfume.out_of_stock ? { filter: 'grayscale(1)', opacity: 0.5 } : undefined} />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center opacity-20">
                     <Package size={18} style={{ color: 'var(--gold)' }} />
@@ -57,9 +59,19 @@ export default async function AdminPerfumesPage() {
 
               {/* Info */}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold truncate" style={{ color: 'var(--ivory)' }}>
-                  {perfume.name}
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-semibold truncate" style={{ color: 'var(--ivory)' }}>
+                    {perfume.name}
+                  </p>
+                  {perfume.out_of_stock && (
+                    <span
+                      className="px-1.5 py-0.5 text-[9px] tracking-wider uppercase rounded flex-shrink-0"
+                      style={{ backgroundColor: 'rgba(239,68,68,0.12)', color: '#f87171', border: '1px solid rgba(239,68,68,0.3)' }}
+                    >
+                      Esgotado
+                    </span>
+                  )}
+                </div>
                 <p className="text-xs truncate" style={{ color: 'rgba(245,240,232,0.4)' }}>
                   {perfume.brand?.name || 'Sem marca'}
                   {perfume.price ? ` · R$ ${perfume.price.toFixed(2).replace('.', ',')}` : ''}
@@ -68,6 +80,7 @@ export default async function AdminPerfumesPage() {
 
               {/* Ações */}
               <div className="flex items-center gap-1.5 flex-shrink-0">
+                <ToggleStockButton id={perfume.id} outOfStock={!!perfume.out_of_stock} />
                 <Link href={`/admin/perfumes/${perfume.id}/editar`}
                   className="w-9 h-9 flex items-center justify-center rounded-lg transition-all"
                   style={{ border: '1px solid rgba(201,168,76,0.2)', color: 'var(--gold)' }}>

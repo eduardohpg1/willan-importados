@@ -15,6 +15,7 @@ export interface Perfume {
   description: string
   images: string[]
   featured: boolean
+  out_of_stock: boolean
   price: number | null
   installments: number | null
   created_at: string

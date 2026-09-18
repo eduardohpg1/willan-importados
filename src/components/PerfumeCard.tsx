@@ -27,6 +27,7 @@ export default function PerfumeCard({ perfume, whatsappNumber }: PerfumeCardProp
             fill
             className="object-cover object-center transition-transform duration-500 hover:scale-105"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            style={perfume.out_of_stock ? { filter: 'grayscale(1)', opacity: 0.6 } : undefined}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center"
@@ -51,6 +52,20 @@ export default function PerfumeCard({ perfume, whatsappNumber }: PerfumeCardProp
             }}
           >
             {perfume.brand.name}
+          </span>
+        )}
+
+        {/* Badge esgotado */}
+        {perfume.out_of_stock && (
+          <span
+            className="absolute top-2 right-2 px-2 py-0.5 text-[10px] tracking-widest uppercase rounded font-medium"
+            style={{
+              backgroundColor: 'rgba(239,68,68,0.85)',
+              backdropFilter: 'blur(6px)',
+              color: '#fff',
+            }}
+          >
+            Esgotado
           </span>
         )}
 
@@ -82,15 +97,24 @@ export default function PerfumeCard({ perfume, whatsappNumber }: PerfumeCardProp
         )}
 
         {/* Botão WhatsApp */}
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-gold flex items-center justify-center gap-1.5 w-full py-2 px-2 rounded-lg text-xs font-semibold mt-auto"
-        >
-          <MessageCircle size={13} />
-          <span>Tenho Interesse</span>
-        </a>
+        {perfume.out_of_stock ? (
+          <div
+            className="flex items-center justify-center gap-1.5 w-full py-2 px-2 rounded-lg text-xs font-semibold mt-auto"
+            style={{ backgroundColor: 'var(--smoke)', color: 'rgba(245,240,232,0.35)' }}
+          >
+            <span>Produto Esgotado</span>
+          </div>
+        ) : (
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-gold flex items-center justify-center gap-1.5 w-full py-2 px-2 rounded-lg text-xs font-semibold mt-auto"
+          >
+            <MessageCircle size={13} />
+            <span>Tenho Interesse</span>
+          </a>
+        )}
       </div>
     </article>
   )

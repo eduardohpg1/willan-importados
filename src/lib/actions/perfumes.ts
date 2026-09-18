@@ -101,6 +101,7 @@ export async function createPerfume(formData: FormData) {
   const brand_id = formData.get('brand_id') as string
   const description = formData.get('description') as string
   const featured = formData.get('featured') === 'true'
+  const out_of_stock = formData.get('out_of_stock') === 'true'
   const images = formData.getAll('images') as string[]
   const priceRaw = formData.get('price') as string
   const installmentsRaw = formData.get('installments') as string
@@ -111,6 +112,7 @@ export async function createPerfume(formData: FormData) {
     brand_id: brand_id || null,
     description,
     featured,
+    out_of_stock,
     images,
     price: priceRaw ? parseFloat(priceRaw) : null,
     installments: installmentsRaw ? parseInt(installmentsRaw) : null,
@@ -130,6 +132,7 @@ export async function updatePerfume(id: string, formData: FormData) {
   const brand_id = formData.get('brand_id') as string
   const description = formData.get('description') as string
   const featured = formData.get('featured') === 'true'
+  const out_of_stock = formData.get('out_of_stock') === 'true'
   const images = formData.getAll('images') as string[]
   const priceRaw = formData.get('price') as string
   const installmentsRaw = formData.get('installments') as string
@@ -142,6 +145,7 @@ export async function updatePerfume(id: string, formData: FormData) {
       brand_id: brand_id || null,
       description,
       featured,
+      out_of_stock,
       images,
       price: priceRaw ? parseFloat(priceRaw) : null,
       installments: installmentsRaw ? parseInt(installmentsRaw) : null,
@@ -153,6 +157,20 @@ export async function updatePerfume(id: string, formData: FormData) {
   revalidatePath('/admin/perfumes')
   revalidatePath('/')
   redirect('/admin/perfumes')
+}
+
+export async function toggleOutOfStock(id: string, out_of_stock: boolean) {
+  const supabase = await createClient()
+  const { error } = await supabase
+    .from('perfumes')
+    .update({ out_of_stock })
+    .eq('id', id)
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/admin/perfumes')
+  revalidatePath('/')
+  return { success: true }
 }
 
 export async function deletePerfume(id: string) {

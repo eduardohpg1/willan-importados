@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS perfumes (
   description TEXT NOT NULL,
   images TEXT[] DEFAULT '{}',
   featured BOOLEAN DEFAULT FALSE,
+  out_of_stock BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

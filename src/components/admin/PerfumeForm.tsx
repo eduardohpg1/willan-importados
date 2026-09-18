@@ -16,6 +16,7 @@ export default function PerfumeForm({ perfume, brands }: PerfumeFormProps) {
   const router = useRouter()
   const [images, setImages] = useState<string[]>(perfume?.images || [])
   const [featured, setFeatured] = useState(perfume?.featured || false)
+  const [outOfStock, setOutOfStock] = useState(perfume?.out_of_stock || false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -28,6 +29,7 @@ export default function PerfumeForm({ perfume, brands }: PerfumeFormProps) {
     formData.delete('images')
     images.forEach((url) => formData.append('images', url))
     formData.set('featured', featured ? 'true' : 'false')
+    formData.set('out_of_stock', outOfStock ? 'true' : 'false')
 
     const result = isEditing
       ? await updatePerfume(perfume!.id, formData)
@@ -164,6 +166,29 @@ export default function PerfumeForm({ perfume, brands }: PerfumeFormProps) {
         </button>
         <span className="text-sm" style={{ color: 'rgba(245,240,232,0.7)' }}>
           Exibir em destaques na página inicial
+        </span>
+      </div>
+
+      {/* Esgotado */}
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          role="switch"
+          aria-checked={outOfStock}
+          onClick={() => setOutOfStock(!outOfStock)}
+          className="relative w-11 h-6 rounded-full transition-all duration-200 flex-shrink-0"
+          style={{
+            backgroundColor: outOfStock ? '#ef4444' : 'var(--smoke)',
+            border: `1px solid ${outOfStock ? '#ef4444' : 'rgba(201,168,76,0.2)'}`,
+          }}
+        >
+          <span
+            className="absolute top-0.5 left-0.5 w-4.5 h-4.5 rounded-full bg-white transition-transform duration-200 w-[18px] h-[18px]"
+            style={{ transform: outOfStock ? 'translateX(20px)' : 'translateX(0)' }}
+          />
+        </button>
+        <span className="text-sm" style={{ color: 'rgba(245,240,232,0.7)' }}>
+          Marcar como esgotado
         </span>
       </div>
 
